@@ -10,13 +10,32 @@
 </div>
 @endif
 <div class="form-group">
-    <label for="cedula">cedula</label>
-    <input class="form-control" type="text" name="cedula" value="{{isset($prestamo->cedula)?$prestamo->cedula:old('cedula') }}" id="cedula">
+    <label for="cedula">Cédula</label>
+    <select class="form-control" name="cedula" id="cedula">
+        <option value="">---Seleccione---</option>
+        @foreach($clientes as $cliente)
+            <option value="{{$cliente->cedula}}" 
+                @if(isset($prestamo->cedula) && $prestamo->cedula == $cliente->cedula) selected 
+                @elseif(old('cedula') == $cliente->cedula) selected 
+                @endif>
+                {{$cliente->cedula}} - {{$cliente->nombre}} {{-- si tienes nombre --}}
+            </option>
+        @endforeach
+    </select>
 </div>
-
 <div class="form-group">
-    <label for="titulo">titulo</label>
-    <input class="form-control" type="text" name="titulo" value="{{isset($prestamo->titulo)?$prestamo->titulo:old('titulo') }}" id="titulo">
+    <label for="titulo">Título</label>
+    <select class="form-control" name="titulo" id="titulo">
+        <option value="">---Seleccione---</option>
+        @foreach($libros as $libro)
+            <option value="{{$libro->titulo}}" 
+                @if(isset($prestamo->titulo) && $prestamo->titulo == $libro->titulo) selected 
+                @elseif(old('titulo') == $libro->titulo) selected 
+                @endif>
+                {{$libro->titulo}}
+            </option>
+        @endforeach
+    </select>
 </div>
 
 <div class="form-group">
