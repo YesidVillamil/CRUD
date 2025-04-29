@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
+use App\Models\Libro;
 use App\Models\Prestamos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -20,9 +22,12 @@ class PrestamosController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    
     public function create()
     {
-        return view('prestamos.create');
+        $clientes = Cliente::all();
+        $libros = Libro::all();
+        return view('prestamos.create', compact('clientes', 'libros'));
     }
 
     /**
@@ -53,6 +58,7 @@ class PrestamosController extends Controller
     /**
      * Display the specified resource.
      */
+
     public function show($id)
     {
         $prestamo = Prestamos::findOrFail($id);
@@ -65,7 +71,9 @@ class PrestamosController extends Controller
     public function edit($id)
     {
         $prestamo = Prestamos::findOrFail($id);
-        return view('prestamos.edit', compact('prestamo'));
+        $clientes = Cliente::all();
+        $libros = Libro::all();
+        return view('prestamos.edit', compact('prestamo', 'clientes', 'libros'));
     }
 
     /**
