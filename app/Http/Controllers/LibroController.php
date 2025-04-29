@@ -11,6 +11,15 @@ class LibroController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function estadisticas()
+    {
+        $prestados = Libro::where('estado', 'Prestado')->count();
+        $disponibles = Libro::where('estado', 'Disponible')->count();
+
+        return view('libro.estadisticas', compact('prestados', 'disponibles'));
+    }
+
     public function index()
     {
         $datos['libros'] = Libro::paginate(5);
@@ -106,5 +115,4 @@ class LibroController extends Controller
 
         return redirect('libro')->with('mensaje', 'Libro eliminado');
     }
-
 }
