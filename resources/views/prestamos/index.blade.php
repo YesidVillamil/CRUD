@@ -18,9 +18,9 @@
         <thead class="thead-light">
             <tr>
                 <th>#</th>
+                <th>Cliente</th>
                 <th>Titulo</th>
-                <th>Autor</th>
-                <th>Genero</th>
+                <th>Fecha</th>
                 <th>Estado</th>
                 <th>Acciones</th>
             </tr>
