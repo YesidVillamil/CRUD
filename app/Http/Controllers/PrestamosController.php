@@ -44,21 +44,30 @@ class PrestamosController extends Controller
         $mensaje = [
             'required' => 'El :attribute es necesario',
         ];
-
+    
         $this->validate($request, $campos, $mensaje);
-
-        $datosPrestamo = request()->except('_token');
-
+    
+        $datosPrestamo = $request->except('_token');
+    
         Prestamos::insert($datosPrestamo);
-
-        //return response()->json($datosLibro);
-        return redirect('prestamos')->with('mensaje', 'Prestamo guardado con éxito');
+    
+        // Actualizar estado del libro
+        $libro = Libro::where('titulo', $request->titulo)->first();
+        if ($libro) {
+            if ($request->estado === 'Asignado') {
+                $libro->estado = 'Prestado';
+            } elseif ($request->estado === 'Devuelto') {
+                $libro->estado = 'Disponible';
+            }
+            $libro->save();
+        }
+    
+        return redirect('prestamos')->with('mensaje', 'Préstamo guardado con éxito');
     }
-
+    
     /**
      * Display the specified resource.
      */
-
     public function show($id)
     {
         $prestamo = Prestamos::findOrFail($id);
@@ -79,27 +88,40 @@ class PrestamosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
-    {
-        $campos = [
-            'cedula' => 'required|string|max:100',
-            'titulo' => 'required|string|max:100',
-            'fecha' => 'required|date',
-            'estado' => 'required|string|max:100',
-        ];
-        $mensaje = [
-            'required' => 'El :attribute es necesario',
-        ];
 
-        $this->validate($request, $campos, $mensaje);
-
-        $datosPrestamo = request()->except(['_token', '_method']);
-
-        Prestamos::where('id', '=', $id)->update($datosPrestamo);
-        $prestamo = Prestamos::findOrFail($id);
-
-        return redirect('prestamos')->with('mensaje', 'Prestamo Modificado');
-    }
+     
+     public function update(Request $request, $id)
+     {
+         $campos = [
+             'cedula' => 'required|string|max:100',
+             'titulo' => 'required|string|max:100',
+             'fecha' => 'required|date',
+             'estado' => 'required|string|max:100',
+         ];
+         $mensaje = [
+             'required' => 'El :attribute es necesario',
+         ];
+     
+         $this->validate($request, $campos, $mensaje);
+     
+         $datosPrestamo = $request->except(['_token', '_method']);
+     
+         Prestamos::where('id', '=', $id)->update($datosPrestamo);
+     
+         // Actualizar estado del libro
+         $libro = Libro::where('titulo', $request->titulo)->first();
+         if ($libro) {
+             if ($request->estado === 'Asignado') {
+                 $libro->estado = 'Prestado';
+             } elseif ($request->estado === 'Devuelto') {
+                 $libro->estado = 'Disponible';
+             }
+             $libro->save();
+         }
+     
+         return redirect('prestamos')->with('mensaje', 'Préstamo modificado');
+     }
+     
 
     /**
      * Remove the specified resource from storage.
