@@ -27,17 +27,10 @@ Route::group(['middleware'=>'auth'],function(){
 Route::resource('cliente', ClienteController::class)->middleware('auth');
 Auth::routes(['register'=>false,'reset'=>false]);
 
-Route::get('/home', [ClienteController::class, 'index'])->name('home');
-
-Route::group(['middleware'=>'auth'],function(){
-    Route::get('/', [ClienteController::class, 'index'])->name('home');
-});
 
 Route::resource('prestamos', PrestamosController::class)->middleware('auth');
 Auth::routes(['register'=>false,'reset'=>false]);
 
-Route::get('/home', [ClienteController::class, 'index'])->name('home');
 
-Route::group(['middleware'=>'auth'],function(){
-    Route::get('/', [ClienteController::class, 'index'])->name('home');
-});
+Route::get('/estadisticas-libros', [LibroController::class, 'estadisticas'])->name('libro.estadisticas');
+
