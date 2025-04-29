@@ -24,15 +24,17 @@
     </select>
 </div>
 <div class="form-group">
-    <label for="titulo">Título</label>
-    <select class="form-control" name="titulo" id="titulo">
-        <option value="">---Seleccione---</option>
-        @foreach($libros as $libro)
-            <option value="{{$libro->titulo}}" 
-                @if(isset($prestamo->titulo) && $prestamo->titulo == $libro->titulo) selected 
-                @elseif(old('titulo') == $libro->titulo) selected 
-                @endif>
-                {{$libro->titulo}}
+    <label for="titulo">Título del libro</label>
+    <select name="titulo" id="titulo" class="form-control">
+        <option value="">---Seleccione un libro---</option>
+        @foreach ($libros as $libro)
+            <option 
+                value="{{ $libro->titulo }}" 
+                {{ (isset($prestamo->titulo) && $prestamo->titulo == $libro->titulo) ? 'selected' : '' }}
+                {{ $libro->estado === 'Prestado' ? 'disabled' : '' }}
+            >
+                {{ $libro->titulo }} 
+                {{ $libro->estado === 'Prestado' ? '(Prestado)' : '' }}
             </option>
         @endforeach
     </select>
